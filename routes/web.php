@@ -18,7 +18,15 @@ use Illuminate\Support\Facades\Auth;
  * default page index..
  */
 Route::get('/', 'App\Http\Controllers\PagesController@index');
+/**
+ * about page..
+ */
+Route::get('/about', 'App\Http\Controllers\PagesController@about');
 
+/**
+ * authentication routes..
+ */
 Auth::routes();
-
+// home/dashboard
+/* Route::get('/home', 'App\Http\Controllers\HomeController@index') */
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

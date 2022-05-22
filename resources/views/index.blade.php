@@ -2,7 +2,13 @@
 
 @section('content')
 
-    <h1>{{ $title }}</h1>
-    <p>This is a page</p>
+    <h1>HOMEPAGE</h1>
+    <!-- check user access controls -->
+    @if (Auth::guest())
+        <p>Welcome to our workout log.</p>
+    @else
+        <p>Welcome again {{ Auth::user()->name }}</p>
+    @endif
 
 @endsection
+
