@@ -44,7 +44,7 @@
         </div>
         <div class="col-9 border">
             
-            Routines
+            <h1 class='text-uppercase'>{{$user}}'s Routines</h1>
 
         </div>
 
