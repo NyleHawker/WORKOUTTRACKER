@@ -2,6 +2,7 @@
 
 @section('content')
 
+    <br>
     <div class="container p-3 bg-dark text-white rounded">
         <h1>Dashboard</h1>
         @if (session('status'))
@@ -11,7 +12,7 @@
         @endif
         {{ __('You are logged in!') }}
         <br><br>
-        <a href="/" class="btn btn-success p-1">Go To Workout Log</a>
+        <a href="/workout" class="btn btn-success p-1">Go To Workout Log</a>
     </div>
 
 @endsection

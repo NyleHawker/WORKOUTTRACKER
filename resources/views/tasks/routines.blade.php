@@ -44,7 +44,7 @@
         </div>
         <div class="col-9 border">
             
-            @yield('task')
+            Routines
 
         </div>
 

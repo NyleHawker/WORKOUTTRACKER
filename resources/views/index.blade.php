@@ -62,7 +62,7 @@
           <p>Provide exercises and the ability to create your own routines and add exercises.</p>
         </div>
       </div>
-    <br><br>
+    <br><br><br><br>
 
 @endsection
 

@@ -28,4 +28,13 @@ class PagesController extends Controller
         ]);
     }
 
+    // tasks components..`
+    /**
+     * return routines..
+     */
+    public function routines() {
+        $user = Auth()->user()->name;
+        return view('tasks.routines')->with('user', $user);
+    }
+
 }

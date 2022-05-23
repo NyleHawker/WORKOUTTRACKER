@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+// main pages route..
 /**
  * default page index..
  */
@@ -22,6 +23,12 @@ Route::get('/', 'App\Http\Controllers\PagesController@index');
  * about page..
  */
 Route::get('/about', 'App\Http\Controllers\PagesController@about');
+
+// workout log routes..
+/**
+ * routines
+ */
+Route::get('/routines', 'App\Http\Controllers\PagesController@routines');
 
 /**
  * authentication routes..
