@@ -43,7 +43,7 @@ class PagesController extends Controller
     public function food(Request $request) {
         // query
         $searchFood = $request->input('foodsearch');
-        $foods = Food::where('food', 'Like', '%{searchFood}%')->paginate(2);
+        $foods = Food::where('food', 'Like', $searchFood)->paginate(2);
 
         // validate
         /*$this->validate($request, [
