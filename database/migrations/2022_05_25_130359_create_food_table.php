@@ -18,11 +18,6 @@ return new class extends Migration
 
             $table->string('food');
             $table->integer('calories');
-            $table->integer('fat');
-            $table->integer('cholesterol');
-            $table->integer('sodium');
-            $table->integer('protein');
-            $table->integer('calcium');
 
             $table->timestamps();
         });
