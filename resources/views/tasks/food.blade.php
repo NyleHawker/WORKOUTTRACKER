@@ -47,7 +47,7 @@
 
         <div class="container p-0 m-0">
             <h3>NUTRITION FACTS FOR <span class="text-uppercase">{{ auth()->user()->name }}</span></h3>
-            <form action="/food" method="GET">
+            <form action="{{route('food')}}" method="GET">
               <div class="input-group mt-1">
                 <input type="search" id="foodsearch" name="foodsearch" class="form-control rounded" placeholder="Search Food's Name.." />
                 <button type="submit" class="btn btn-outline-primary">search</button>
