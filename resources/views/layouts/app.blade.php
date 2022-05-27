@@ -29,7 +29,11 @@
         
         @include('include.navbar')
 
-        @include('include.genmessage')
+        <br><br>
+        
+        <div class="container">
+            @include('include.genmessage')
+        </div>
 
         <main class="container">
             @yield('content')

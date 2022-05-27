@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Food;
 
 class PagesController extends Controller
 {
@@ -35,6 +36,23 @@ class PagesController extends Controller
     public function routines() {
         $user = Auth()->user()->name;
         return view('tasks.routines')->with('user', $user);
+    }
+    /**
+     * return food..
+     */
+    public function food(Request $request) {
+        // query
+        $searchFood = $request->input('foodsearch');
+        $foods = Food::where('food', 'Like', $searchFood)->paginate(2);
+
+        // validate
+        /*$this->validate($request, [
+            'foodsearch' => 'required'
+        ]);*/
+
+        return view('tasks.food', [
+            'foods' => $foods
+        ]);
     }
 
 }

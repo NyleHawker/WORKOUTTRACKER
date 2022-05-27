@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fixed-top">
     <div class="container">
         <a class="navbar-brand text-uppercase text-" href="{{ url('/') }}">
             {{ config('app.name') }}

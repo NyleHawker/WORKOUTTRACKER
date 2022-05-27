@@ -12,7 +12,7 @@
         @endif
         {{ __('You are logged in!') }}
         <br><br>
-        <a href="/workout" class="btn btn-success p-1">Go To Workout Log</a>
+        <a href="/routines" class="btn btn-success p-1">Go To Workout Log</a>
     </div>
 
 @endsection

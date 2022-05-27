@@ -25,10 +25,10 @@ Route::get('/', 'App\Http\Controllers\PagesController@index');
 Route::get('/about', 'App\Http\Controllers\PagesController@about');
 
 // workout log routes..
-/**
- * routines
- */
+// routines
 Route::get('/routines', 'App\Http\Controllers\PagesController@routines');
+// food
+Route::get('/food', 'App\Http\Controllers\PagesController@food');
 
 /**
  * authentication routes..
