@@ -43,7 +43,8 @@ class PagesController extends Controller
     public function food(Request $request) {
         // query
         $searchFood = $request->input('foodsearch');
-        $foods = Food::where('food', 'ilike', "%{$searchFood}%")->paginate(2);
+        // when pushing to heroku, comment out the below code..
+        $foods = Food::where('food', 'like', "%{$searchFood}%")->paginate(2);
 
         // validate
         /*$this->validate($request, [

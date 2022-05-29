@@ -56,10 +56,13 @@
             @if (count($foods) > 0)
             <ul class="list-group" id="myList">
                 @foreach ($foods as $food)
-                <li class="list-group-item border border-dark mt-1">
-                <h5><i class="fa fa-less-than"></i> {{ $food->food }} <i class="fa fa-greater-than"></i></h5>
-                <table class="table table-info table-striped">
+                <li class="list-group-item border border-dark mt-1 p-0">
+                <table class="table table-info table-striped m-0">
                   <thead>
+                    <tr>
+                      <th scope="col" class="h3"><i class="fa fa-dolly"></i> {{ $food->food }}</th>
+                      <th scope="col"></th>
+                    </tr>
                     <tr>
                       <th scope="col">Nutrients</th>
                       <th scope="col">Amount</th>
@@ -68,27 +71,27 @@
                   <tbody>
                     <tr>
                       <td>Calories</td>
-                      <td>{{ $food->calories }}</td>
+                      <td class="text-danger">{{ $food->calories }}</td>
                     </tr>
                     <tr>
                       <td>Total Fat</td>
-                      <td>{{ $food->fat }} g</td>
+                      <td class="text-danger">{{ $food->fat }} g</td>
                     </tr>
                     <tr>
                       <td>Cholesterol</td>
-                      <td>{{ $food->cholesterol }} mg</td>
+                      <td class="text-danger">{{ $food->cholesterol }} mg</td>
                     </tr>
                     <tr>
                       <td>Sodium</td>
-                      <td>{{ $food->sodium }} mg</td>
+                      <td class="text-danger">{{ $food->sodium }} mg</td>
                     </tr>
                     <tr>
                       <td>Protein</td>
-                      <td>{{ $food->protein }} g</td>
+                      <td class="text-danger">{{ $food->protein }} g</td>
                     </tr>
                     <tr>
                       <td>Calcium</td>
-                      <td>{{ $food->calcium }} %</td>
+                      <td class="text-danger">{{ $food->calcium }} %</td>
                     </tr>
                   </tbody>
                 </table>
