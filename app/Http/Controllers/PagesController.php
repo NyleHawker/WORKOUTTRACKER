@@ -65,7 +65,7 @@ class PagesController extends Controller
     public function exercise(Request $request) {
         // query
         $searchExercise = $request->input('exerciseSearch');
-        $exercises = Exercise::where('exercise', 'LIKE', "%{$searchExercise}%")->paginate(10);
+        $exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->paginate(10);
 
         return view('tasks.exercise')->with('exercises', $exercises);
     }
