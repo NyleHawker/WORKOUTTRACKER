@@ -29,6 +29,10 @@ Route::get('/about', 'App\Http\Controllers\PagesController@about');
 Route::get('/routines', 'App\Http\Controllers\PagesController@routines');
 // food
 Route::get('/food', 'App\Http\Controllers\PagesController@food');
+// exercises
+Route::get('/exercise', 'App\Http\Controllers\PagesController@exercise');
+Route::get('/showexercise/{id}', 'App\Http\Controllers\PagesController@showexercise');
+Route::get('/addExercise', 'App\Http\Controllers\PagesController@addExercise');
 
 /**
  * authentication routes..

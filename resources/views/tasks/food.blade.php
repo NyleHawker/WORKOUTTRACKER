@@ -21,7 +21,7 @@
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link text-white">
+                <a href="/exercise" class="nav-link text-white">
                   <i class="fa fa-walking"></i>
                   Exercise
                 </a>
@@ -43,7 +43,7 @@
           </div>
 
     </div>
-    <div class="col-9 border p-2">
+    <div class="col-9 p-0">
 
         <div class="container p-0 m-0">
             <h3>NUTRITION FACTS FOR <span class="text-uppercase">{{ auth()->user()->name }}</span></h3>
@@ -53,16 +53,14 @@
                 <button type="submit" class="btn btn-outline-primary">search</button>
               </div>
             </form>
+            <hr>
             @if (count($foods) > 0)
             <ul class="list-group" id="myList">
                 @foreach ($foods as $food)
                 <li class="list-group-item border border-dark mt-1 p-0">
+                <h3 class="m-1 p-2 text-white bg-info">{{ $food->food }}</h3>
                 <table class="table table-info table-striped m-0">
                   <thead>
-                    <tr>
-                      <th scope="col" class="h3"><i class="fa fa-dolly"></i> {{ $food->food }}</th>
-                      <th scope="col"></th>
-                    </tr>
                     <tr>
                       <th scope="col">Nutrients</th>
                       <th scope="col">Amount</th>

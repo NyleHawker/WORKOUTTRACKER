@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,8 @@ class PagesController extends Controller
         ]);
     }
 
-    // tasks components..`
+    // tasks components..
+
     /**
      * return routines..
      */
@@ -37,6 +39,7 @@ class PagesController extends Controller
         $user = Auth()->user()->name;
         return view('tasks.routines')->with('user', $user);
     }
+
     /**
      * return food..
      */
@@ -44,7 +47,7 @@ class PagesController extends Controller
         // query
         $searchFood = $request->input('foodsearch');
         // when pushing to heroku, comment out the below code..
-        $foods = Food::where('food', 'ilike', "%{$searchFood}%")->paginate(2);
+        $foods = Food::where('food', 'LIKE', "%{$searchFood}%")->paginate(2);
 
         // validate
         /*$this->validate($request, [
@@ -54,6 +57,42 @@ class PagesController extends Controller
         return view('tasks.food', [
             'foods' => $foods
         ]);
+    }
+
+    /**
+     * return all exercise related pages..
+     */
+    public function exercise(Request $request) {
+        // query
+        $searchExercise = $request->input('exerciseSearch');
+        $exercises = Exercise::where('exercise', 'LIKE', "%{$searchExercise}%")->paginate(10);
+
+        return view('tasks.exercise')->with('exercises', $exercises);
+    }
+    public function showexercise($id) {
+        $exercise = Exercise::find($id);
+
+        return view('tasks.showexercise')->with('exercise', $exercise);
+
+    }
+    public function addExercise(Request $request) {
+
+        // valid empty field
+        $this->validate($request, [
+            'exerciseName' => 'required'
+        ]);
+
+        // store exercise..
+        $exercise = new Exercise();
+
+        $exercise->exercise = $request->exerciseName;
+        $exercise->instruction = "";
+        $exercise->imgpath = "";
+
+        // save..
+        $exercise->save();
+
+        return redirect('/exercise')->with('success', 'An Exercise has been added!');
     }
 
 }

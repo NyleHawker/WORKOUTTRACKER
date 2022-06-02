@@ -29,7 +29,7 @@
         
         @include('include.navbar')
 
-        <br><br>
+        <br><br><br>
         
         <div class="container">
             @include('include.genmessage')

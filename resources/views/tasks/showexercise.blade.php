@@ -14,13 +14,13 @@
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                   <li class="nav-item">
-                    <a href="/routines" class="nav-link active" aria-current="page">
+                    <a href="/routines" class="nav-link text-white" aria-current="page">
                       <i class="fa fa-tasks"></i>
                       Routines
                     </a>
                   </li>
                   <li>
-                    <a href="/exercise" class="nav-link text-white">
+                    <a href="/exercise" class="nav-link text-white active">
                       <i class="fa fa-walking"></i>
                       Exercise
                     </a>
@@ -42,12 +42,33 @@
               </div>
 
         </div>
-        <div class="col-9 border">
+        <div class="col-9 p-0">
             
-            <h1 class='text-uppercase'>{{$user}}'s Routines</h1>
+            @if (!empty($exercise->instruction))
+              <div class="card m-0">
+                <img class="card-img-top" src="{{ asset($exercise->imgpath) }}" alt="Card image cap">
+                <div class="card-body">
+                  <h3 class="card-title text-info">{{ $exercise->exercise }}</h3>
+                  <br>
+                  <p class="card-text h6">{{ $exercise->instruction }}</p>
+                  <hr>
+                  <a href="/exercise" class="btn btn-dark">Go Back</a>
+                </div>
+              </div>
+            @else
+              <div class="card m-0">
+                <div class="card-body">
+                  <h3 class="card-title text-info">{{ $exercise->exercise }}</h3>
+                  <hr>
+                  <a href="/exercise" class="btn btn-dark">Go Back</a>
+                </div>
+              </div>
+            @endif
 
         </div>
 
     </div>
+
+    <br><br><br>
 
 @endsection
