@@ -32,7 +32,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link text-white">
+                    <a href="/tracker" class="nav-link text-white">
                       <i class="fa fa-history"></i>
                       Tracker
                     </a>
@@ -42,9 +42,9 @@
               </div>
 
         </div>
-        <div class="col-9">
+        <div class="col-9 p-0">
             
-            <div class="p-0 mt-2 d-flex flex-row justify-content-between align-items-center">
+          <div class="p-0 mt-2 d-flex flex-row justify-content-between align-items-center">
                 <h3 class="m-0 p-0">All Exercises</h3>
                 <form action="/exercise" method="GET" class="m-0">
                     <div class="input-group m-0">
@@ -59,25 +59,16 @@
             @if (count($exercises) > 0) 
                 
               @foreach ($exercises as $exercise)
-  
-                @if (!empty($exercise->instruction))
                     
                 <a href="/showexercise/{{ $exercise->id }}" class="list-group-item list-group-item-action align-middle" height="2rem">
                   <span class="h4">{{ $exercise->exercise }}<span>
-                  <img width="28px" height="28px" src="{{asset($exercise->imgpath)}}" class="rounded float-end" alt="...">&nbsp;
-                  <span class="badge bg-info rounded float-start">p</span>
+                  <img width="28px" height="28px" src="{{asset($exercise->imgpath)}}" class="rounded float-end border border-info" alt="...">
                 </a>
-
-                @else
-
-                <a href="/showexercise/{{ $exercise->id }}" class="list-group-item list-group-item-action align-middle" height="2rem">
-                  <span class="h4">{{ $exercise->exercise }}<span>
-                  <img width="28px" height="28px" src="{{asset('images/empty.png')}}" class="rounded float-end" alt="...">
-                </a>
-                    
-                @endif
 
               @endforeach
+
+              <br>
+              {{$exercises->links()}}
 
               <hr>
 
@@ -106,6 +97,22 @@
                 @endfor
               </div>
 
+            @endif
+
+            @if (count($customworkouts) > 0)
+              <br>
+                  
+              <h3 class="m-0 p-0 text-info">Custom Exercise</h3><br>
+
+              @foreach ($customworkouts as $customworkout)
+                    
+                <a href="/showworkout/{{ $customworkout->id }}" class="list-group-item list-group-item-action align-middle" height="2rem">
+                  <span class="h4">{{ $customworkout->workout }}<span>
+                  <img width="28px" height="28px" src="{{asset('images/empty.png')}}" class="rounded float-end border border-info" alt="...">
+                </a>
+
+              @endforeach
+ 
             @endif
             
             </div>

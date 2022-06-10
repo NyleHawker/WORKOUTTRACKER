@@ -33,7 +33,7 @@
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link text-white">
+                <a href="/tracker" class="nav-link text-white">
                   <i class="fa fa-history"></i>
                   Tracker
                 </a>

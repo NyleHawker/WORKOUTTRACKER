@@ -43,40 +43,38 @@
 
         </div>
         <div class="col-9 p-0">
-            
-          <h3>{{ $user }}'s Routines</h3>
 
-          <hr>
+            <a href="/routines" class="btn btn-success">Go Back</a>
 
-          <div class="row">
-            <div class="col">
-              <h3>Quick Start</h3>
-              <a href="/startworkout" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-plus"></i>&nbsp;Start a Workout</span>
-              </a>
+            <div class="container mt-1 p-2 rounded" style="background-color: #cccccc;">
+
+              <button onclick="startTimer()" class="btn btn-success">Start</button>
+
+              <div id="timer">
+                <i class="fa fa-clock"></i>
+                <span id="minutes">00</span>:<span id="seconds">00</span>
+              </div>
+
             </div>
-            <div class="col">
-              <h3>Routines</h3>
-              <a href="#" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-list"></i>&nbsp;Create a Routine</span>
-              </a>
-            </div>
-          </div>
-
-          <br>
-
-          <h3>All Routines</h3>
-
-          <ul class="list-group">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-          </ul>
 
         </div>
 
     </div>
+
+    {{-- instant script --}}
+    <script>
+        var second = 0;
+        function pad ( value ) { return value > 9 ? value : "0" + value; }
+        function startTimer() {
+          var timer = setInterval( function(){
+            document.getElementById("seconds").innerHTML=pad(++second%60);
+            document.getElementById("minutes").innerHTML=pad(parseInt(second/60,10));
+          }, 1000);
+        }
+        function stopTimer() {
+          clearInterval(timer);
+          alert(second);
+        }
+    </script>
 
 @endsection

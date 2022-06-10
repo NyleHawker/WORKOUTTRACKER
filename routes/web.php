@@ -33,6 +33,11 @@ Route::get('/food', 'App\Http\Controllers\PagesController@food');
 Route::get('/exercise', 'App\Http\Controllers\PagesController@exercise');
 Route::get('/showexercise/{id}', 'App\Http\Controllers\PagesController@showexercise');
 Route::get('/addExercise', 'App\Http\Controllers\PagesController@addExercise');
+Route::get('/showworkout/{id}', 'App\Http\Controllers\PagesController@showworkout');
+Route::get('/destroyWorkout/{id}', 'App\Http\Controllers\PagesController@destroyWorkout');
+// sub tasks
+Route::get('/startworkout', 'App\Http\Controllers\PagesController@startworkout');
+Route::get('/tracker', 'App\Http\Controllers\PagesController@tracker');
 
 /**
  * authentication routes..

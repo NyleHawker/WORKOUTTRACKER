@@ -14,7 +14,7 @@
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                   <li class="nav-item">
-                    <a href="/routines" class="nav-link active" aria-current="page">
+                    <a href="/routines" class="nav-link text-white" aria-current="page">
                       <i class="fa fa-tasks"></i>
                       Routines
                     </a>
@@ -32,7 +32,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="/tracker" class="nav-link text-white">
+                    <a href="/tracker" class="nav-link active">
                       <i class="fa fa-history"></i>
                       Tracker
                     </a>
@@ -44,36 +44,9 @@
         </div>
         <div class="col-9 p-0">
             
-          <h3>{{ $user }}'s Routines</h3>
-
-          <hr>
-
-          <div class="row">
-            <div class="col">
-              <h3>Quick Start</h3>
-              <a href="/startworkout" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-plus"></i>&nbsp;Start a Workout</span>
-              </a>
-            </div>
-            <div class="col">
-              <h3>Routines</h3>
-              <a href="#" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-list"></i>&nbsp;Create a Routine</span>
-              </a>
-            </div>
+          <div class="container m-0">
+            <h3>{{ $user }}'s Tracker</h3>
           </div>
-
-          <br>
-
-          <h3>All Routines</h3>
-
-          <ul class="list-group">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-          </ul>
 
         </div>
 

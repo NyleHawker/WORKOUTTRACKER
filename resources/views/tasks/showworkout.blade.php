@@ -14,13 +14,13 @@
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                   <li class="nav-item">
-                    <a href="/routines" class="nav-link active" aria-current="page">
+                    <a href="/routines" class="nav-link text-white" aria-current="page">
                       <i class="fa fa-tasks"></i>
                       Routines
                     </a>
                   </li>
                   <li>
-                    <a href="/exercise" class="nav-link text-white">
+                    <a href="/exercise" class="nav-link text-white active">
                       <i class="fa fa-walking"></i>
                       Exercise
                     </a>
@@ -44,39 +44,23 @@
         </div>
         <div class="col-9 p-0">
             
-          <h3>{{ $user }}'s Routines</h3>
+            @if ($customworkout)
 
-          <hr>
-
-          <div class="row">
-            <div class="col">
-              <h3>Quick Start</h3>
-              <a href="/startworkout" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-plus"></i>&nbsp;Start a Workout</span>
-              </a>
+            <div class="card m-0">
+              <div class="card-body">
+                <h3 class="card-title text-info">{{ $customworkout->workout }}</h3>
+                <hr>
+                <a href="/exercise" class="btn btn-dark">Go Back</a>
+                <a href="/destroyWorkout/{{ $customworkout->id }}" class="btn btn-danger float-end">Remove Workout</a>
+              </div>
             </div>
-            <div class="col">
-              <h3>Routines</h3>
-              <a href="#" class="btn btn-dark w-100 p-4">
-                <span class="h5"><i class="fa fa-list"></i>&nbsp;Create a Routine</span>
-              </a>
-            </div>
-          </div>
 
-          <br>
-
-          <h3>All Routines</h3>
-
-          <ul class="list-group">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
-          </ul>
+            @endif
 
         </div>
 
     </div>
+
+    <br><br><br>
 
 @endsection

@@ -32,7 +32,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="nav-link text-white">
+                    <a href="/tracker" class="nav-link text-white">
                       <i class="fa fa-history"></i>
                       Tracker
                     </a>
@@ -44,25 +44,19 @@
         </div>
         <div class="col-9 p-0">
             
-            @if (!empty($exercise->instruction))
-              <div class="card m-0">
-                <img class="card-img-top" src="{{ asset($exercise->imgpath) }}" alt="Card image cap">
-                <div class="card-body">
-                  <h3 class="card-title text-info">{{ $exercise->exercise }}</h3>
-                  <br>
-                  <p class="card-text h6">{{ $exercise->instruction }}</p>
-                  <hr>
-                  <a href="/exercise" class="btn btn-dark">Go Back</a>
-                </div>
+            @if ($exercise)
+
+            <div class="card m-0">
+              <img class="card-img-top" src="{{ asset($exercise->imgpath) }}" alt="Card image cap">
+              <div class="card-body">
+                <h3 class="card-title text-info">{{ $exercise->exercise }}</h3>
+                <br>
+                <p class="card-text h6">{{ $exercise->instruction }}</p>
+                <hr>
+                <a href="/exercise" class="btn btn-dark">Go Back</a>
               </div>
-            @else
-              <div class="card m-0">
-                <div class="card-body">
-                  <h3 class="card-title text-info">{{ $exercise->exercise }}</h3>
-                  <hr>
-                  <a href="/exercise" class="btn btn-dark">Go Back</a>
-                </div>
-              </div>
+            </div>
+
             @endif
 
         </div>
