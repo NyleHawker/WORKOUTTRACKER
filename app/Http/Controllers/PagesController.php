@@ -85,7 +85,10 @@ class PagesController extends Controller
         $user_id = Auth()->user()->id;
         // query
         $searchExercise = $request->input('exerciseSearch');
-        $exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->paginate(5);
+
+        //$exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->paginate(5);
+        $exercises = Exercise::where('exercise', 'ilike', '%' . $searchExercise . '%')->paginate(5);
+
         $customworkouts = CustomWorkout::where([
             //['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
             ['workout', 'ilike', '%' . $searchExercise . '%'],
