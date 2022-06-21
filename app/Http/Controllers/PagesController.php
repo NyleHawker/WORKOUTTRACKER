@@ -64,7 +64,8 @@ class PagesController extends Controller
         // query
         $searchFood = $request->input('foodsearch');
 
-        $foods = Food::where('food', 'LIKE', "%{$searchFood}%")->paginate(2);
+        //$foods = Food::where('food', 'LIKE', "%{$searchFood}%")->paginate(2);
+        $foods = Food::where('food', 'ilike', '%' . $searchFood . '%')->paginate(2);
 
         // validate
         /*$this->validate($request, [
