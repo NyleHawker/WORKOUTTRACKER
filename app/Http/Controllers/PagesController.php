@@ -87,7 +87,8 @@ class PagesController extends Controller
         $searchExercise = $request->input('exerciseSearch');
         $exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->paginate(5);
         $customworkouts = CustomWorkout::where([
-            ['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
+            //['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
+            ['workout', 'ilike', '%' . $searchExercise . '%'],
             ['user_id', 'LIKE', $user_id]
         ])->paginate(5);
 
@@ -156,9 +157,13 @@ class PagesController extends Controller
         $user_id = Auth()->user()->id;
         // query workouts..
         $searchExercise = $request->input('exerciseSearch');
-        $exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->get();
+
+        //$exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->get();
+        $exercises = Exercise::where('exercise', 'ilike', '%' . $searchExercise . '%')->get();
+
         $customworkouts = CustomWorkout::where([
-            ['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
+            //['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
+            ['workout', 'ilike', '%' . $searchExercise . '%'],
             ['user_id', 'LIKE', $user_id]
         ])->get();
 
