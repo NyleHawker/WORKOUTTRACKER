@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Food;
+use App\Models\UserTracker;
+use App\Models\WorkoutDone;
 use Carbon\Carbon;
+//use Illuminate\Contracts\Session\Session;
+use Session;
 
 class PagesController extends Controller
 {
@@ -47,8 +51,9 @@ class PagesController extends Controller
     /**
      * return routines..
      */
-    public function routines() {
+    public function routines(Request $request) {
         $user = Auth()->user()->name;
+
         return view('tasks.routines')->with('user', $user);
     }
 
@@ -105,6 +110,19 @@ class PagesController extends Controller
             'exerciseName' => 'required'
         ]);
 
+        $exercises = CustomWorkout::all();
+
+        foreach($exercises as $exercise) {
+            $casestr = strcasecmp($exercise->workout, $request->exerciseName);
+            if ($casestr == 0) {
+
+                return back()->with('error', 'Oops! This exercise is already existed!');
+                break;
+
+            } else {
+               continue;
+            }
+        }
         // store exercise..
         $exercise = new CustomWorkout();
 
@@ -114,7 +132,7 @@ class PagesController extends Controller
         // save..
         $exercise->save();
 
-        return redirect('/exercise')->with('success', 'An Exercise has been added!');
+        return back()->with('success', 'An Exercise has been added!');
     }
     public function showworkout($id) {
         $customworkout = CustomWorkout::find($id);
@@ -131,24 +149,155 @@ class PagesController extends Controller
     }
 
     // start workout
-    public function startworkout() {
-        $start = Carbon::now();
+    public function startworkout(Request $request) {
+        // query 
+        // query authenticated user..
+        $user_id = Auth()->user()->id;
+        // query workouts..
+        $searchExercise = $request->input('exerciseSearch');
+        $exercises = Exercise::where('exercise', 'LIKE', '%' . strtolower($searchExercise) . '%')->get();
+        $customworkouts = CustomWorkout::where([
+            ['workout', 'LIKE', '%' . strtolower($searchExercise) . '%'],
+            ['user_id', 'LIKE', $user_id]
+        ])->get();
+
+        //$trackerid = session('trackerid');
+        $trackerid = session()->get('trackerid');
+
+        $workoutdone = WorkoutDone::where([
+            ['workout_id', 'LIKE', $trackerid],
+            ['user_id', 'LIKE', $user_id]
+        ])->get();
 
         return view('tasks.workout', [
-            'start' => $start
+            'exercises' => $exercises, 'customworkouts' => $customworkouts
+            , 'addedworkout' => $workoutdone
+            , 'trackerid' => $trackerid
         ]);
     }
-    /*public function duration() {
-        $current = 
-    }*/
+    // create a workout
+    public function createworkout() {
+        $user_id = Auth()->user()->id;
+        // create a workout
+        $tracker = new UserTracker();
+        $tracker->user_id = $user_id;
+        $tracker->total_duration = 0;
+        $tracker->total_sets = 0;
+
+        // save tracker..
+        $tracker->save();
+
+        $trackerid = $tracker->id;
+
+        //to set a session variable use
+        /*session(['trackerid' => $trackerid]);
+        session()->save();*/
+        session()->put('trackerid', $trackerid);
+        
+        return redirect('/startworkout');
+        //return back();
+    }
+    // discard a workout
+    public function discardworkout($id) {
+        $tracker = UserTracker::find($id);
+        $workouts = WorkoutDone::all();
+
+        foreach($workouts as $workout) {
+            if ($workout->workout_id == $tracker->id) {
+                // delete workouts..
+                $workout->delete();
+            }
+        }
+        // delete workout
+        $tracker->delete();
+
+        return redirect('/routines')->with('success', 'Workout Discarded!');
+    }
+    // store sets & duration
+    public function storetracker(Request $request, $trackerid) {
+        // store total trackers
+        $tracker = UserTracker::find($trackerid);
+
+        $tracker->total_duration = $request->duration;
+        $tracker->total_sets = $request->sets;
+
+        // save..
+        $tracker->save();
+
+        return redirect('/tracker')->with('success', "You've finished a workout!");
+    }
+    // store workouts & sets
+    public function storeworkout(Request $request, $id, $trackerid, $type) {
+        // store workouts & sets
+        $user_id = Auth()->user()->id;
+        $workout = Exercise::find($id);
+        $customworkout = CustomWorkout::find($id);
+        $workoutdone = new WorkoutDone();
+
+        $workoutdone->user_id = $user_id;
+        if ($type == 1) {
+            $workoutdone->workout_name = $customworkout->workout;
+        } else {
+            $workoutdone->workout_name = $workout->exercise;
+        }
+
+        $workoutdone->workout_id = $trackerid;
+        $workoutdone->workout_sets = 1;
+
+        // save added workout..
+        $workoutdone->save();
+
+        //return redirect('/startworkout')->with('trackerid', $trackerid);
+        return back();
+    }
+    // remove workouts..
+    public function removeworkout($id) {
+        $workout = WorkoutDone::find($id);
+
+        // delete..
+        $workout->delete();
+
+        return back()->with('success', 'Workout removed!');
+    }
+    // store routines
+    public function storeroutine(Request $request) {
+        $user = Auth()->user()->name;
+
+        $totaltime = $request->duration;
+
+        return redirect('/routines');
+    }
 
     /**
      * tracker page
      */
-    public function tracker() {
-        $user = Auth()->user()->name;
+    public function tracker(Request $request) {
+        $now = Carbon::now();
 
-        return view('tasks.tracker')->with('user', $user);
+        $user = Auth()->user()->name;
+        $user_id = Auth()->user()->id;
+
+        $sum_duration = UserTracker::where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_sets = UserTracker::where('user_id', 'LIKE', $user_id)->count();
+        $last_workout = UserTracker::where('user_id', 'LIKE', $user_id)->select('created_at')->get()->last();
+
+        // query all the workout dones..
+        $workouteds = UserTracker::orderBy('created_at', 'desc')->paginate(3);
+
+        $dones = WorkoutDone::groupBy(['workout_id','workout_name'])
+        ->select(array('workout_id', 'workout_name', WorkoutDone::raw("COUNT(*) as count_row")))
+        ->get();
+
+        $new_dones = array();
+
+        return view('tasks.tracker',[
+            'user' => $user,
+            'sum_duration' => $sum_duration, 
+            'sum_sets' => $sum_sets,
+            'last_workout' => $last_workout,
+            'workouteds' => $workouteds,
+            'dones' => $dones
+        ]);
     }
 
 }

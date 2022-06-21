@@ -50,6 +50,7 @@
                     <div class="input-group m-0">
                       <input type="search" id="exerciseSearch" name="exerciseSearch" class="form-control rounded" placeholder="Find exercise.." />
                       <button type="submit" class="btn btn-outline-primary">search</button>
+                      <button type="submit" class="btn btn-outline-primary"><i class="fa fa-eraser"></i></button>
                     </div>
                 </form>
             </div>

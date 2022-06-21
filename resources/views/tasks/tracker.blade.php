@@ -44,12 +44,86 @@
         </div>
         <div class="col-9 p-0">
             
-          <div class="container m-0">
-            <h3>{{ $user }}'s Tracker</h3>
-          </div>
+            <h2 style="color:rgb(7, 156, 156)"><i class="fa fa-bookmark"></i> {{ $user }}</h2>
+            
+            <table class="mt-2 mb-0 table table-secondary table-hover table-bordered border-white text-secondary">
+              <tbody>
+                <tr>
+                  <td class="h4 text-success">Duration</td>
+                  <td class="h4 text-success">Workouts</td>
+                </tr>
+                <tr>
+                  <td class="h5"><i class="fa fa-hourglass"></i>
+                    @php
+                      echo gmdate('i', $sum_duration);
+                      echo "mn";
+                      echo gmdate('s', $sum_duration);
+                      echo "s";
+                    @endphp
+                  </td>
+                  <td class="h5"><i class="fa fa-dumbbell"></i> {{ $sum_sets }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="mt-0 mb-4 table table-secondary table-hover table-bordered border-white text-secondary">
+              <tbody>
+                <tr>
+                  <td class="h4 text-success">Last Workout</td>
+                </tr>
+                <tr>
+                  <td class="h5">
+                    @if (empty($last_workout->created_at))
+                      None...
+                    @else
+                      {{$last_workout->created_at->diffForHumans()}}
+                    @endif
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <h2 class="text-secondary">Workouts History</h2>
+
+            <div class="list-group">
+              @if (count($workouteds) > 0)
+                  @foreach ($workouteds as $workouted)
+                  <div class="list-group-item list-group-item-action p-3 mb-2 border">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1 text-success"><i class="fa fa-running"></i>
+                          @php
+                            echo gmdate('i', $workouted->total_duration);
+                            echo "mn";
+                            echo gmdate('s', $workouted->total_duration);
+                            echo "s";
+                          @endphp
+                      </h5>
+                      <small>{{ $workouted->created_at->diffForHumans() }}</small>
+                    </div>
+                    <p class="text-muted">
+
+                      @foreach ($dones as $done)
+                          @if ($done->workout_id == $workouted->id)
+                            {{ $done->workout_name }} <i class="fa fa-times text-danger"></i>
+                            {{ $done->count_row }}
+                            <br>
+                          @endif
+                      @endforeach
+
+                    </p>
+                  </div>
+                  @endforeach
+              @else
+                <div class="text-secondary h4">No workouts..</div>
+              @endif
+
+              {{ $workouteds->links() }}
+
+            </div>
 
         </div>
 
     </div>
+
+    <br><br><br>
 
 @endsection

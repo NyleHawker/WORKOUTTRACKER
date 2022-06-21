@@ -51,7 +51,7 @@
           <div class="row">
             <div class="col">
               <h3>Quick Start</h3>
-              <a href="/startworkout" class="btn btn-dark w-100 p-4">
+              <a href="/createworkout" class="btn btn-dark w-100 p-4">
                 <span class="h5"><i class="fa fa-plus"></i>&nbsp;Start a Workout</span>
               </a>
             </div>
