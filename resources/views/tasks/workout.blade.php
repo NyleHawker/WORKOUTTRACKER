@@ -22,7 +22,7 @@
                 <form action="/storetracker/{{$trackerid}}" method="GET" class="m-0">
                   {{--<input type="hidden" name="tracker_id" id="tracker_id" value={{$trackerid}} />--}}
                   <input type="hidden" name="duration" id="duration" />
-                  <input type="hidden" name="sets" id="sets" value=0 />
+                  <input type="hidden" name="sets" id="sets" value={{$sets}} />
                   @if (count($addedworkout) == 0)
                     <button type="submit" class="btn btn-dark" disabled>Finish</button>
                   @else
@@ -40,7 +40,7 @@
                 </div>
                 <div id="timer" class="h3">
                   <i id="div1" class="fa fa-running"></i>
-                  <span>{{ $sets }}</span>
+                  <span id="sets_display">{{$sets}}</span>
                 </div>
               </div>
 
@@ -174,12 +174,12 @@
     {{-- script --}}
     <script>
 
-        /*var totalsets = 0;
+        var totalsets = 0;
         function finished() {
           totalsets += 1;
           document.getElementById('sets_display').innerHTML = totalsets;
           document.getElementById('sets').value = totalsets;
-        }*/
+        }
 
         var second = 0;
         function pad ( value ) { return value > 9 ? value : "0" + value; }

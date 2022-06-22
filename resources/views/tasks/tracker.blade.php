@@ -56,7 +56,7 @@
                   <td class="h5"><i class="fa fa-dumbbell"></i> Workouts: {{ $sum_sets }}</td>
                   <td class="h5">
                     @if (empty($last_workout->created_at))
-                      None...
+                      No workout..
                     @else
                       Last Workout: {{$last_workout->created_at->diffForHumans()}}
                     @endif

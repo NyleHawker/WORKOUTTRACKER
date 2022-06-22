@@ -121,7 +121,7 @@ class PagesController extends Controller
 
         foreach($exercises as $exercise) {
             $casestr = strcasecmp($exercise->workout, $request->exerciseName);
-            if ($casestr == 0) {
+            if ($casestr == 0 && $exercise->user_id == auth()->user()->id) {
                 return back()->with('error', 'Oops! This exercise is already existed!');
                 break;
             } else {continue;}
@@ -294,6 +294,9 @@ class PagesController extends Controller
     public function tracker(Request $request) {
         $now = Carbon::now();
 
+        $user = Auth()->user()->name;
+        $user_id = Auth()->user()->id;
+
         $from = date($now->startOfWeek());
         $to = date($now->endOfWeek());
 
@@ -309,18 +312,15 @@ class PagesController extends Controller
         $days = array($monday, $tuesday, $wednesday, $thursday, $friday, $saturday, $sunday);
 
         // sum of duration each days..
-        $sum_mon = UserTracker::whereDate('created_at', $monday)->sum('total_duration');
-        $sum_tue = UserTracker::whereDate('created_at', $tuesday)->sum('total_duration');
-        $sum_wed = UserTracker::whereDate('created_at', $wednesday)->sum('total_duration');
-        $sum_thur = UserTracker::whereDate('created_at', $thursday)->sum('total_duration');
-        $sum_fri = UserTracker::whereDate('created_at', $friday)->sum('total_duration');
-        $sum_sat = UserTracker::whereDate('created_at', $saturday)->sum('total_duration');
-        $sum_sun = UserTracker::whereDate('created_at', $sunday)->sum('total_duration');
+        $sum_mon = UserTracker::whereDate('created_at', $monday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_tue = UserTracker::whereDate('created_at', $tuesday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_wed = UserTracker::whereDate('created_at', $wednesday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_thur = UserTracker::whereDate('created_at', $thursday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_fri = UserTracker::whereDate('created_at', $friday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_sat = UserTracker::whereDate('created_at', $saturday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_sun = UserTracker::whereDate('created_at', $sunday)->where('user_id', 'LIKE', $user_id)->sum('total_duration');
 
         $sums = array($sum_mon, $sum_tue, $sum_wed, $sum_thur, $sum_fri, $sum_sat, $sum_sun);
-
-        $user = Auth()->user()->name;
-        $user_id = Auth()->user()->id;
 
         //$sum_duration = UserTracker::where('user_id', 'LIKE', $user_id)->sum('total_duration');
         $sum_duration = UserTracker::whereBetween('created_at', [$from, $to])->sum('total_duration');
@@ -328,7 +328,9 @@ class PagesController extends Controller
         $last_workout = UserTracker::where('user_id', 'LIKE', $user_id)->select('created_at')->get()->last();
 
         // query all the workout dones..
-        $workouteds = UserTracker::orderBy('created_at', 'desc')->paginate(6);
+        $workouteds = UserTracker::where('user_id', 'LIKE', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->limit(8)->cursorPaginate(5);
 
         $dones = WorkoutDone::groupBy(['workout_id','workout_name'])
         ->select(array('workout_id', 'workout_name', WorkoutDone::raw("COUNT(*) as count_row")))
