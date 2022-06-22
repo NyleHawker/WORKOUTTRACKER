@@ -57,7 +57,7 @@
             </div>
             <div class="col">
               <h3>Routines</h3>
-              <a type="button" href="#" class="btn btn-dark w-100 p-4" disabled>
+              <a type="button" href="#" class="btn btn-dark w-100 p-4 disabled">
                 <span class="h5"><i class="fa fa-list"></i>&nbsp;Create a Routine</span>
               </a>
             </div>
