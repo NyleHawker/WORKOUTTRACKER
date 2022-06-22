@@ -22,7 +22,7 @@
                 <form action="/storetracker/{{$trackerid}}" method="GET" class="m-0">
                   {{--<input type="hidden" name="tracker_id" id="tracker_id" value={{$trackerid}} />--}}
                   <input type="hidden" name="duration" id="duration" />
-                  <input type="hidden" name="sets" id="sets" value=4 />
+                  <input type="hidden" name="sets" id="sets" value=0 />
                   @if (count($addedworkout) == 0)
                     <button type="submit" class="btn btn-dark" disabled>Finish</button>
                   @else
@@ -40,14 +40,14 @@
                 </div>
                 <div id="timer" class="h3">
                   <i id="div1" class="fa fa-running"></i>
-                  <span id="sets_display">0</span>
+                  <span>{{ $sets }}</span>
                 </div>
               </div>
 
               <br>
               <div class="w-100 d-flex flex-column justify-content-center align-items-center">
                 <h5 class="text-secondary">Add an exercise to start your workout..</h5>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addworkouts">
+                <button id="add_button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addworkouts">
                   Add Workouts
                 </button>
               </div>
@@ -61,8 +61,7 @@
                     <tr>
                       <th scope="col"><i class="fa fa-arrow-down"></i></th>
                       <th scope="col">Workout</th>
-                      <th scope="col">Sets</th>
-                      <th scope="col"></th>
+                      <th scope="col">Set</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
@@ -72,12 +71,14 @@
                       <th scope="row">{{ $loop->index+1 }}</th>
                       <td>{{ $workout->workout_name }}</td>
                       <td class="text-muted" id="set">1</td>
-                      <td>
+                      <td id="trash">
                         <a href="/removeworkout/{{$workout->id}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                       </td>
-                      <td>
-                        <button class="btn btn-info" id="check-btn" onclick="finished(); this.disabled=true"><i class="fa fa-check"></i></button>
-                      </td>
+                      {{--<td>
+                        <button class="btn btn-info" id="check-btn" onclick="finished(); this.disabled=true;
+                        document.getElementById('trash').hidden=true;
+                        "><i class="fa fa-check"></i></button>
+                      </td>--}}
                     </tr>
                     @endforeach
                   </tbody>
@@ -173,11 +174,12 @@
     {{-- script --}}
     <script>
 
-        var totalsets = 0;
+        /*var totalsets = 0;
         function finished() {
           totalsets += 1;
           document.getElementById('sets_display').innerHTML = totalsets;
-        }
+          document.getElementById('sets').value = totalsets;
+        }*/
 
         var second = 0;
         function pad ( value ) { return value > 9 ? value : "0" + value; }
@@ -186,6 +188,9 @@
             document.getElementById("seconds").innerHTML=pad(++second%60);
             document.getElementById("minutes").innerHTML=pad(parseInt(second/60,10));
           }, 1000);
+
+          document.getElementById('add_button').disabled = true;
+          document.getElementById('add_button').style.backgroundColor = "grey";
         }
         function stopTimer() {
           //clearInterval(timer);

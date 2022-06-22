@@ -48,39 +48,50 @@
             
             <table class="mt-2 mb-0 table table-secondary table-hover table-bordered border-white text-secondary">
               <tbody>
-                <tr>
+                {{--<tr>
                   <td class="h4 text-success">Duration</td>
                   <td class="h4 text-success">Workouts</td>
-                </tr>
+                </tr>--}}
                 <tr>
-                  <td class="h5"><i class="fa fa-hourglass"></i>
-                    @php
-                      echo gmdate('i', $sum_duration);
-                      echo "mn";
-                      echo gmdate('s', $sum_duration);
-                      echo "s";
-                    @endphp
-                  </td>
-                  <td class="h5"><i class="fa fa-dumbbell"></i> {{ $sum_sets }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <table class="mt-0 mb-4 table table-secondary table-hover table-bordered border-white text-secondary">
-              <tbody>
-                <tr>
-                  <td class="h4 text-success">Last Workout</td>
-                </tr>
-                <tr>
+                  <td class="h5"><i class="fa fa-dumbbell"></i> Workouts: {{ $sum_sets }}</td>
                   <td class="h5">
                     @if (empty($last_workout->created_at))
                       None...
                     @else
-                      {{$last_workout->created_at->diffForHumans()}}
+                      Last Workout: {{$last_workout->created_at->diffForHumans()}}
                     @endif
                   </td>
                 </tr>
               </tbody>
             </table>
+
+            {{-- days of the week, calculate from $now --}}
+            <div id="days" class="d-none">
+            @foreach($days as $day)
+              <h4 id="day{{$loop->index+1}}">{{ $day->format('d/m/Y') }}</h4>
+            @endforeach
+            </div>
+            {{-- sums of the week, calculate from $now --}}
+            <div id="sums" class="d-none">
+              @foreach($sums as $sum)
+                <h4 id="sum{{$loop->index+1}}">@php
+                  echo gmdate('i', $sum);
+                @endphp</h4>
+              @endforeach
+            </div>
+
+            <br>
+                    
+            <h4 id="total_duration" class="text-secondary m-0">This Week: @php
+              echo gmdate('H', $sum_duration);
+              echo "hr&nbsp"; 
+              echo gmdate('i', $sum_duration);
+              echo "mn";
+            @endphp</h4>
+
+            <canvas id="myChart" width="auto" height="auto"></canvas>
+
+            <br>
             
             <h2 class="text-secondary">Workouts History</h2>
 
@@ -97,19 +108,19 @@
                             echo "s";
                           @endphp
                       </h5>
-                      <small>{{ $workouted->created_at->diffForHumans() }}</small>
+                      <small>{{ $workouted->created_at->format('d/m/Y') }}</small>
                     </div>
-                    <p class="text-muted">
 
                       @foreach ($dones as $done)
                           @if ($done->workout_id == $workouted->id)
+                          <p class="h6 w-auto">
                             {{ $done->workout_name }} <i class="fa fa-times text-danger"></i>
-                            {{ $done->count_row }}
+                            <span class="text-danger">{{ $done->count_row }}</span>
                             <br>
+                          </p>
                           @endif
                       @endforeach
 
-                    </p>
                   </div>
                   @endforeach
               @else
@@ -125,5 +136,72 @@
     </div>
 
     <br><br><br>
+
+    <script>
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: [
+                document.getElementById('day1').innerText, 
+                document.getElementById('day2').innerText, 
+                document.getElementById('day3').innerText,
+                document.getElementById('day4').innerText,
+                document.getElementById('day5').innerText,
+                document.getElementById('day6').innerText,
+                document.getElementById('day7').innerText
+              ],
+              datasets: [{
+                  label: 'Duration: ',
+                  borderColor: 'blue',
+                  data: [
+                    document.getElementById('sum1').innerText, 
+                    document.getElementById('sum2').innerText, 
+                    document.getElementById('sum3').innerText,
+                    document.getElementById('sum4').innerText,
+                    document.getElementById('sum5').innerText,
+                    document.getElementById('sum6').innerText,
+                    document.getElementById('sum7').innerText,
+                  ],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1,
+                  tension: 0.3
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      //beginAtZero: true
+                    ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, ticks) {
+                        return value + "mn";
+                    }
+                }
+                  }
+              },
+              plugins: {
+                legend: {
+                    display: false
+                }
+              }
+          }
+      });
+      </script>
 
 @endsection

@@ -51,7 +51,7 @@
               <div class="input-group mt-1">
                 <input type="search" id="foodsearch" name="foodsearch" class="form-control rounded" placeholder="Search Food's Name.." />
                 <button type="submit" class="btn btn-outline-primary">search</button>
-                {{--<button type="submit" class="btn btn-outline-primary"><i class="fa fa-eraser"></i></button>--}}
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-eraser"></i></button>
               </div>
             </form>
             <hr>

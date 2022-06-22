@@ -11,6 +11,7 @@ use App\Models\Food;
 use App\Models\UserTracker;
 use App\Models\WorkoutDone;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 //use Illuminate\Contracts\Session\Session;
 use Session;
 
@@ -116,17 +117,21 @@ class PagesController extends Controller
         ]);
 
         $exercises = CustomWorkout::all();
+        $workouts = Exercise::all();
 
         foreach($exercises as $exercise) {
             $casestr = strcasecmp($exercise->workout, $request->exerciseName);
             if ($casestr == 0) {
-
                 return back()->with('error', 'Oops! This exercise is already existed!');
                 break;
-
-            } else {
-               continue;
-            }
+            } else {continue;}
+        }
+        foreach($workouts as $workout) {
+            $str = strcasecmp($workout->exercise, $request->exerciseName);
+            if ($str == 0) {
+                return back()->with('error', 'Oops! This exercise is already existed!');
+                break;
+            } else {continue;}
         }
         // store exercise..
         $exercise = new CustomWorkout();
@@ -178,10 +183,16 @@ class PagesController extends Controller
             ['user_id', 'LIKE', $user_id]
         ])->get();
 
+        $sets = WorkoutDone::where([
+            ['workout_id', 'LIKE', $trackerid],
+            ['user_id', 'LIKE', $user_id]
+        ])->count();
+
         return view('tasks.workout', [
             'exercises' => $exercises, 'customworkouts' => $customworkouts
             , 'addedworkout' => $workoutdone
             , 'trackerid' => $trackerid
+            , 'sets' => $sets
         ]);
     }
     // create a workout
@@ -283,15 +294,41 @@ class PagesController extends Controller
     public function tracker(Request $request) {
         $now = Carbon::now();
 
+        $from = date($now->startOfWeek());
+        $to = date($now->endOfWeek());
+
+        // days of the week..
+        $monday = Carbon::now()->startOfWeek();
+        $tuesday = $monday->copy()->addDay();
+        $wednesday = $tuesday->copy()->addDay();
+        $thursday = $wednesday->copy()->addDay();
+        $friday = $thursday->copy()->addDay();
+        $saturday = $friday->copy()->addDay();
+        $sunday = $saturday->copy()->addDay();
+
+        $days = array($monday, $tuesday, $wednesday, $thursday, $friday, $saturday, $sunday);
+
+        // sum of duration each days..
+        $sum_mon = UserTracker::whereDate('created_at', $monday)->sum('total_duration');
+        $sum_tue = UserTracker::whereDate('created_at', $tuesday)->sum('total_duration');
+        $sum_wed = UserTracker::whereDate('created_at', $wednesday)->sum('total_duration');
+        $sum_thur = UserTracker::whereDate('created_at', $thursday)->sum('total_duration');
+        $sum_fri = UserTracker::whereDate('created_at', $friday)->sum('total_duration');
+        $sum_sat = UserTracker::whereDate('created_at', $saturday)->sum('total_duration');
+        $sum_sun = UserTracker::whereDate('created_at', $sunday)->sum('total_duration');
+
+        $sums = array($sum_mon, $sum_tue, $sum_wed, $sum_thur, $sum_fri, $sum_sat, $sum_sun);
+
         $user = Auth()->user()->name;
         $user_id = Auth()->user()->id;
 
-        $sum_duration = UserTracker::where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        //$sum_duration = UserTracker::where('user_id', 'LIKE', $user_id)->sum('total_duration');
+        $sum_duration = UserTracker::whereBetween('created_at', [$from, $to])->sum('total_duration');
         $sum_sets = UserTracker::where('user_id', 'LIKE', $user_id)->count();
         $last_workout = UserTracker::where('user_id', 'LIKE', $user_id)->select('created_at')->get()->last();
 
         // query all the workout dones..
-        $workouteds = UserTracker::orderBy('created_at', 'desc')->paginate(3);
+        $workouteds = UserTracker::orderBy('created_at', 'desc')->paginate(6);
 
         $dones = WorkoutDone::groupBy(['workout_id','workout_name'])
         ->select(array('workout_id', 'workout_name', WorkoutDone::raw("COUNT(*) as count_row")))
@@ -301,6 +338,8 @@ class PagesController extends Controller
 
         return view('tasks.tracker',[
             'user' => $user,
+            'days' => $days,
+            'sums' => $sums,
             'sum_duration' => $sum_duration, 
             'sum_sets' => $sum_sets,
             'last_workout' => $last_workout,

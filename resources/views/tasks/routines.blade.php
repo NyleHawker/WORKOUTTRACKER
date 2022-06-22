@@ -57,7 +57,7 @@
             </div>
             <div class="col">
               <h3>Routines</h3>
-              <a href="#" class="btn btn-dark w-100 p-4">
+              <a type="button" href="#" class="btn btn-dark w-100 p-4" disabled>
                 <span class="h5"><i class="fa fa-list"></i>&nbsp;Create a Routine</span>
               </a>
             </div>
@@ -68,11 +68,7 @@
           <h3>All Routines</h3>
 
           <ul class="list-group">
-            <li class="list-group-item">An item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
+            <li class="list-group-item">A Routine</li>
           </ul>
 
         </div>
