@@ -41,7 +41,7 @@ class PagesController extends Controller
      * return about page..
      */
     public function about() {
-        $authors = array('Em Vannin', 'Keo Leangchoue', 'Lang Singchheng');
+        $authors = array('Em Vannin', 'Keo Leangchoue', 'Lang Singchheng', 'Noch PhakSamnang');
         return view('about', [
             'authors' => $authors
         ]);
@@ -323,7 +323,7 @@ class PagesController extends Controller
         $sums = array($sum_mon, $sum_tue, $sum_wed, $sum_thur, $sum_fri, $sum_sat, $sum_sun);
 
         //$sum_duration = UserTracker::where('user_id', 'LIKE', $user_id)->sum('total_duration');
-        $sum_duration = UserTracker::whereBetween('created_at', [$from, $to])->sum('total_duration');
+        $sum_duration = UserTracker::whereBetween('created_at', [$from, $to])->where('user_id', 'LIKE', $user_id)->sum('total_duration');
         $sum_sets = UserTracker::where('user_id', 'LIKE', $user_id)->count();
         $last_workout = UserTracker::where('user_id', 'LIKE', $user_id)->select('created_at')->get()->last();
 

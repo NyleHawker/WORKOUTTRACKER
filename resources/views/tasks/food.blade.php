@@ -59,8 +59,8 @@
             <ul class="list-group" id="myList">
                 @foreach ($foods as $food)
                 <li class="list-group-item border border-dark mt-1 p-0">
-                <h3 class="m-1 p-2 text-white bg-info">{{ $food->food }}</h3>
-                <table class="table table-info table-striped m-0">
+                <h3 class="m-1 p-2 text-white" style="background-color: #4472c4">{{ $food->food }}</h3>
+                <table class="table table-striped m-0" style="background-color: #d9e1f2">
                   <thead>
                     <tr>
                       <th scope="col">Nutrients</th>
